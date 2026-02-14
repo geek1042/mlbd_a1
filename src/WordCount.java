@@ -59,10 +59,17 @@ public class WordCount {
 
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
+				job.getConfiguration().setLong("mapreduce.input.fileinputformat.split.maxsize",32L*1024*1024);
 
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
+	
+	long startTime=System.currentTimeMillis();
+	boolean success=job.waitForCompletion(true);
+	long endTime=System.currentTimeMillis();
+	
+	System.out.println("Total Execution Time:" + (endTime - startTime) + "ms");
 
-        System.exit(job.waitForCompletion(true) ? 0 : 1);
+        System.exit(success ? 0 : 1);
     }
 }
