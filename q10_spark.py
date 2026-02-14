@@ -1,10 +1,6 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import input_file_name
-from pyspark.sql.functions import substring
-from pyspark.sql.functions import regexp_extract
-from pyspark.sql.functions import avg, length
+from pyspark.sql.functions import input_file_name, regexp_extract, avg, length
 
-# Create Spark session
 spark = SparkSession.builder \
     .appName("Q10_Metadata") \
     .getOrCreate()
@@ -12,11 +8,12 @@ spark = SparkSession.builder \
 # Load dataset (whole file per row)
 books_df = spark.read.format("text") \
     .option("wholetext", "true") \
-    .load("/Users/nupurgupta/Documents/iit/ml_with_bigdata/assignment1/D184MB/*.txt") \
+    .load("C:/Users/Shreyas/OneDrive/Desktop/mlbd_a1/D184MB/*.txt") \
     .withColumn("file_name", input_file_name())
 
 books_df = books_df.withColumnRenamed("value", "text")
 
+# Extract metadata using regex
 books_df = books_df.withColumn(
     "title",
     regexp_extract("text", r"Title:\s*([^\n\r]*)", 1)
@@ -48,6 +45,5 @@ books_df.groupBy("language").count().orderBy("count", ascending=False).show(1)
 
 print("Average Title Length:")
 books_df.select(avg(length("title"))).show()
-
 
 spark.stop()
