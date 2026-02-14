@@ -148,11 +148,11 @@ demonstration.
 
     mlbd_a1/
     │
-    ├── code/                # Java and PySpark source code
-    ├── report/              # Assignment PDF and documentation
-    ├── results/             # Output files and screenshots
+    ├── src               
+    ├── classes           
+    ├── D184MB           
     ├── README.md
-    └── .gitignore           # Dataset excluded
+    └── ....
 
 ------------------------------------------------------------------------
 
